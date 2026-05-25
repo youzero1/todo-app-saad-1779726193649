@@ -49,7 +49,8 @@ export function useTodos() {
   // Real-time subscription
   useEffect(() => {
     if (!supabase) return;
-    const channel = supabase
+    const client = supabase;
+    const channel = client
       .channel('todos-realtime')
       .on(
         'postgres_changes',
@@ -60,7 +61,7 @@ export function useTodos() {
       )
       .subscribe();
     return () => {
-      void supabase.removeChannel(channel);
+      void client.removeChannel(channel);
     };
   }, [fetchTodos]);
 
