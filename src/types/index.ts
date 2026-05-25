@@ -9,3 +9,11 @@ export interface Todo {
   createdAt: number;
   category: string;
 }
+
+// Shape returned by Supabase (todos table)
+export interface DbTodo {
+  id: string;
+  text: string;
+  completed: boolean;
+  created_at: string;
+}

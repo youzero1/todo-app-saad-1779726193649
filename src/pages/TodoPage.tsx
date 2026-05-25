@@ -4,12 +4,14 @@ import TodoItem from '@/components/TodoItem';
 import FilterBar from '@/components/FilterBar';
 import StatsBar from '@/components/StatsBar';
 import EmptyState from '@/components/EmptyState';
-import { CheckCheck } from 'lucide-react';
+import { CheckCheck, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function TodoPage() {
   const {
     todos,
     allTodos,
+    loading,
+    error,
     filter,
     setFilter,
     categoryFilter,
@@ -40,49 +42,69 @@ export default function TodoPage() {
           </div>
         </div>
 
+        {/* Error Banner */}
+        {error && (
+          <div className="flex items-start gap-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl px-4 py-3 mb-6 text-sm">
+            <AlertCircle size={18} className="flex-shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
+
         {/* Add Form */}
         <AddTodoForm onAdd={addTodo} />
 
-        {/* Stats */}
-        {allTodos.length > 0 && (
-          <StatsBar
-            total={allTodos.length}
-            active={activeCount}
-            completed={completedCount}
-          />
+        {/* Loading */}
+        {loading && (
+          <div className="flex items-center justify-center gap-2 py-10 text-slate-400">
+            <Loader2 size={20} className="animate-spin" />
+            <span className="text-sm">Loading tasks…</span>
+          </div>
         )}
 
-        {/* Filters */}
-        {allTodos.length > 0 && (
-          <FilterBar
-            filter={filter}
-            setFilter={setFilter}
-            categoryFilter={categoryFilter}
-            setCategoryFilter={setCategoryFilter}
-            categories={categories}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            completedCount={completedCount}
-            onClearCompleted={clearCompleted}
-          />
-        )}
-
-        {/* Todo List */}
-        <div>
-          {todos.length === 0 ? (
-            <EmptyState hasAny={allTodos.length > 0} />
-          ) : (
-            todos.map((todo) => (
-              <TodoItem
-                key={todo.id}
-                todo={todo}
-                onToggle={toggleTodo}
-                onDelete={deleteTodo}
-                onEdit={editTodo}
+        {!loading && (
+          <>
+            {/* Stats */}
+            {allTodos.length > 0 && (
+              <StatsBar
+                total={allTodos.length}
+                active={activeCount}
+                completed={completedCount}
               />
-            ))
-          )}
-        </div>
+            )}
+
+            {/* Filters */}
+            {allTodos.length > 0 && (
+              <FilterBar
+                filter={filter}
+                setFilter={setFilter}
+                categoryFilter={categoryFilter}
+                setCategoryFilter={setCategoryFilter}
+                categories={categories}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                completedCount={completedCount}
+                onClearCompleted={clearCompleted}
+              />
+            )}
+
+            {/* Todo List */}
+            <div>
+              {todos.length === 0 ? (
+                <EmptyState hasAny={allTodos.length > 0} />
+              ) : (
+                todos.map((todo) => (
+                  <TodoItem
+                    key={todo.id}
+                    todo={todo}
+                    onToggle={toggleTodo}
+                    onDelete={deleteTodo}
+                    onEdit={editTodo}
+                  />
+                ))
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
