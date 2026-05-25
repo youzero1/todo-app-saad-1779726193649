@@ -62,7 +62,6 @@ export default function TodoPage() {
             categories={categories}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            activeCount={activeCount}
             completedCount={completedCount}
             onClearCompleted={clearCompleted}
           />

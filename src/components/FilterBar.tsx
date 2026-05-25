@@ -10,7 +10,6 @@ type FilterBarProps = {
   categories: string[];
   searchQuery: string;
   setSearchQuery: (q: string) => void;
-  activeCount: number;
   completedCount: number;
   onClearCompleted: () => void;
 };
@@ -23,7 +22,6 @@ export default function FilterBar({
   categories,
   searchQuery,
   setSearchQuery,
-  activeCount,
   completedCount,
   onClearCompleted,
 }: FilterBarProps) {
