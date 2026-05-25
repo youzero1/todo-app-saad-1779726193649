@@ -4,7 +4,7 @@ import TodoItem from '@/components/TodoItem';
 import FilterBar from '@/components/FilterBar';
 import StatsBar from '@/components/StatsBar';
 import EmptyState from '@/components/EmptyState';
-import { CheckCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { CheckCheck, AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 
 export default function TodoPage() {
   const {
@@ -36,10 +36,13 @@ export default function TodoPage() {
           <div className="w-10 h-10 bg-indigo-500 rounded-2xl flex items-center justify-center shadow-lg">
             <CheckCheck size={22} className="text-white" />
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="text-2xl font-bold text-slate-800">My Tasks</h1>
             <p className="text-xs text-slate-400">{activeCount} remaining</p>
           </div>
+          {loading && (
+            <RefreshCw size={16} className="text-slate-400 animate-spin" />
+          )}
         </div>
 
         {/* Error Banner */}
@@ -53,15 +56,15 @@ export default function TodoPage() {
         {/* Add Form */}
         <AddTodoForm onAdd={addTodo} />
 
-        {/* Loading */}
-        {loading && (
+        {/* Initial Loading */}
+        {loading && allTodos.length === 0 && (
           <div className="flex items-center justify-center gap-2 py-10 text-slate-400">
             <Loader2 size={20} className="animate-spin" />
             <span className="text-sm">Loading tasks…</span>
           </div>
         )}
 
-        {!loading && (
+        {!loading || allTodos.length > 0 ? (
           <>
             {/* Stats */}
             {allTodos.length > 0 && (
@@ -89,7 +92,7 @@ export default function TodoPage() {
 
             {/* Todo List */}
             <div>
-              {todos.length === 0 ? (
+              {todos.length === 0 && !loading ? (
                 <EmptyState hasAny={allTodos.length > 0} />
               ) : (
                 todos.map((todo) => (
@@ -104,7 +107,7 @@ export default function TodoPage() {
               )}
             </div>
           </>
-        )}
+        ) : null}
       </div>
     </div>
   );
